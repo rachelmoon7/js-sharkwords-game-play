@@ -15,7 +15,7 @@ const WORDS = [
 ];
 
 let numWrong = 0;
-
+let guess = 0;
 // Loop over the chars in `word` and create divs.
 //
 
@@ -50,7 +50,12 @@ const isLetterInWord = (letter) => document.querySelector(`div.${letter}`) !== n
 // Called when `letter` is in word. Update contents of divs with `letter`.
 //
 const handleCorrectGuess = (letter) => {
-  document.querySelector(`div.${letter}`).innerHTML = letter
+  //create list of HTML element objects
+  const correctLetter = document.querySelectorAll(`div.${letter}`)
+  //loop through list to catch duplicate correct letters
+  for (const letterx of correctLetter) {
+    letterx.innerHTML = letter;
+  }
 };
 
 //
@@ -84,6 +89,7 @@ const resetGame = () => {
 (function startGame() {
   // For now, we'll hardcode the word that the user has to guess.
   const word = 'hello';
+  const uniqueCount = new Set(word).size
 
   createDivsForChars(word);
   generateLetterButtons();
@@ -92,14 +98,26 @@ const resetGame = () => {
     // add an event handler to handle clicking on a letter button
     button.addEventListener('click', () => {
       const letter = button.innerHTML;
-    if (isLetterInWord(letter)) {
-      handleCorrectGuess(letter);
-    } else {
-      handleWrongGuess(letter);
-    }
+
+      if (isLetterInWord(letter)) {
+        handleCorrectGuess(letter);
+        guess += 1
+        console.log(guess)
+
+        if (guess == uniqueCount) {
+          alert('You won! :)');
+          document.querySelector('#win').style.display = ''
+          }
+
+      } else {
+        handleWrongGuess(letter);
+      }
   });
-  }
   
+  
+  }
+ 
   // add an event handler to handle clicking on the Play Again button
-  // YOUR CODE HERE
+  document.querySelector('#play-again').addEventListener('click', () => resetGame());
+  document.querySelector('#win').addEventListener('click', () => resetGame());
 })();
