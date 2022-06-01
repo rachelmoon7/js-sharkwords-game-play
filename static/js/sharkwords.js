@@ -88,7 +88,8 @@ const resetGame = () => {
 //
 (function startGame() {
   // For now, we'll hardcode the word that the user has to guess.
-  const word = 'hello';
+  // const word = 'hello';
+  const word = WORDS[Math.floor(Math.random() * WORDS.length)];
   const uniqueCount = new Set(word).size
 
   createDivsForChars(word);
